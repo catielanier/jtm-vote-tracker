@@ -7,5 +7,9 @@
 <script>
 export default {
   name: "Voter",
+  props: {
+    userId: String,
+    username: String,
+  },
 };
 </script>
