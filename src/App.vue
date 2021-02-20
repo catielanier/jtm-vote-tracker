@@ -8,7 +8,7 @@
         <h1>Vote Tracker</h1>
       </div>
     </header>
-    <router-view />
+    <router-view :userId="userId" :username="username" isAdmin="isAdmin" />
   </div>
 </template>
 
@@ -43,3 +43,30 @@ header {
   grid-template-columns: 1fr 2fr;
 }
 </style>
+
+<script>
+import firebase from "firebase";
+import { firebaseConfig } from "./constants/firebase.js";
+firebase.initializeApp(firebaseConfig);
+export default {
+  data() {
+    return {
+      userId: "",
+      username: "",
+      isAdmin: false,
+    };
+  },
+  mounted() {
+    firebase.auth().onAuthStateChanged((user) => {
+      const { uid } = user;
+      const dbRefUser = firebase.database().ref(`users/${uid}`);
+      dbRefUser.once("value", (snapshot) => {
+        const data = snapshot.val();
+        this.userId = uid;
+        this.username = data.username;
+        this.isAdmin = data.isAdmin;
+      });
+    });
+  },
+};
+</script>

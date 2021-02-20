@@ -41,7 +41,8 @@ export default {
           .createUserWithEmailAndPassword(email, password)
           .then((res) => {
             const dbRef = firebase.database().ref(`users/${res.user.uid}`);
-            dbRef.set({ username, email });
+            dbRef.set({ username, email, isAdmin: false });
+            window.location.assign("/");
           })
           .catch((err) => console.error(err.code, err.message));
       } else {
