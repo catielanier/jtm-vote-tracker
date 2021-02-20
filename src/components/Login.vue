@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import firebase from "firebase";
 export default {
   name: "Login",
   data() {
@@ -22,6 +23,20 @@ export default {
       email: "",
       password: "",
     };
+  },
+  methods: {
+    doLogin: function () {
+      const { email, password } = this.$data;
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          console.log("success");
+        })
+        .catch((err) => {
+          console.error(err.code, err.message);
+        });
+    },
   },
 };
 </script>
