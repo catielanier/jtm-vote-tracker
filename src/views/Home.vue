@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Login v-if="userId === ''" />
-    <VoteAdmin v-if="userId !== '' && isAdmin" />
+    <VoteAdmin v-else-if="userId !== '' && isAdmin" />
     <Voter v-else />
   </div>
 </template>
