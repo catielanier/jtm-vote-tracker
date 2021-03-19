@@ -1,6 +1,7 @@
 <template>
   <div>
     <h2>Login</h2>
+    <p class="error" v-if="error !== ''"><span>Error:</span> {{ error }}</p>
     <form @submit.prevent="doLogin">
       <div>
         <input type="text" v-model="email" placeholder="Email Address" />
@@ -22,6 +23,7 @@ export default {
     return {
       email: "",
       password: "",
+      error: "",
     };
   },
   methods: {
@@ -34,8 +36,16 @@ export default {
         })
         .catch((err) => {
           console.error(err.code, err.message);
+          this.error = err.message;
         });
     },
   },
 };
 </script>
+
+<style>
+.error span {
+  font-weight: bold;
+  color: red;
+}
+</style>

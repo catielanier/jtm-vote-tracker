@@ -1,6 +1,7 @@
 <template>
   <div>
     <h2>Signup</h2>
+    <p class="error" v-if="error !== ''"><span>Error:</span> {{ error }}</p>
     <form @submit.prevent="doSignup">
       <div>
         <input type="text" v-model="email" placeholder="Email Address" />
@@ -34,6 +35,7 @@ export default {
       password: "",
       verifyPassword: "",
       username: "",
+      error: "",
     };
   },
   methods: {
@@ -47,9 +49,13 @@ export default {
             dbRef.set({ username, email, isAdmin: false });
             window.location.assign("/");
           })
-          .catch((err) => console.error(err.code, err.message));
+          .catch((err) => {
+            console.error(err.code, err.message);
+            this.error = err.message;
+          });
       } else {
         console.error("Passwords don't match.");
+        this.error = "Passwords don't match.";
       }
     },
   },
