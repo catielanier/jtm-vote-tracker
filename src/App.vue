@@ -45,9 +45,7 @@ header {
 </style>
 
 <script>
-import firebase from "firebase";
-import { firebaseConfig } from "./constants/firebase.js";
-firebase.initializeApp(firebaseConfig);
+import firebase, { auth } from "./constants/firebase.js";
 export default {
   data() {
     return {
@@ -57,15 +55,17 @@ export default {
     };
   },
   mounted() {
-    firebase.auth().onAuthStateChanged((user) => {
-      const { uid } = user;
-      const dbRefUser = firebase.database().ref(`users/${uid}`);
-      dbRefUser.once("value", (snapshot) => {
-        const data = snapshot.val();
-        this.userId = uid;
-        this.username = data.username;
-        this.isAdmin = data.isAdmin;
-      });
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const { uid } = user;
+        const dbRefUser = firebase.database().ref(`users/${uid}`);
+        dbRefUser.once("value", (snapshot) => {
+          const data = snapshot.val();
+          this.userId = uid;
+          this.username = data.username;
+          this.isAdmin = data.isAdmin;
+        });
+      }
     });
   },
 };

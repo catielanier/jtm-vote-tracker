@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import firebase from "firebase";
+import { auth } from "../constants/firebase.js";
 export default {
   name: "Login",
   data() {
@@ -27,8 +27,7 @@ export default {
   methods: {
     doLogin: function () {
       const { email, password } = this.$data;
-      firebase
-        .auth()
+      auth
         .signInWithEmailAndPassword(email, password)
         .then(() => {
           console.log("success");

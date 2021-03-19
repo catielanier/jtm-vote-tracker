@@ -9,7 +9,11 @@
         <input type="password" v-model="password" placeholder="Password" />
       </div>
       <div>
-        <input type="password" v-model="verifyPassword" placeholder="Verify Password" />
+        <input
+          type="password"
+          v-model="verifyPassword"
+          placeholder="Verify Password"
+        />
       </div>
       <div>
         <input type="text" v-model="username" password="Username" />
@@ -21,7 +25,7 @@
 </template>
 
 <script>
-import firebase from "firebase";
+import firebase, { auth } from "../constants/firebase.js";
 export default {
   name: "Signup",
   data() {
@@ -36,8 +40,7 @@ export default {
     doSignup: function () {
       const { email, password, verifyPassword, username } = this.$data;
       if (password === verifyPassword) {
-        firebase
-          .auth()
+        auth
           .createUserWithEmailAndPassword(email, password)
           .then((res) => {
             const dbRef = firebase.database().ref(`users/${res.user.uid}`);
